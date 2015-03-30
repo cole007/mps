@@ -1,0 +1,15 @@
+
+# INSERT INTO `interests` (`person_id`,`member_id`,`member_name`,`date`,`category`,`item`,`value`,`file`) VALUES ('uk.org.publicwhip/person/10001','uk.org.publicwhip/member/40289','Diane Abbott','2015-03-09','','6 March 2014, received Â£700. Hours: 3 hrs.','700','regmem2015-03-09.xml')
+
+
+# SELECT DISTINCT file FROM interests ORDER BY date ASC
+
+# SELECT member_name, SUM(value) AS total FROM mp AS m, interests AS i WHERE i.member_id = m.mys_id AND m.party = 'Lab' GROUP BY mys_id ORDER BY total DESC 
+
+# SELECT party, SUM(value) AS total, COUNT(mys_id) FROM mp AS m, interests AS i WHERE i.member_id = m.mys_id GROUP BY party ORDER BY total DESC LIMIT 20 
+
+# SELECT member_name, date, value, item FROM mp AS m, interests AS i WHERE i.member_id = m.mys_id ORDER BY value DESC LIMIT 20 
+
+# SELECT SUM(value) FROM mp AS m, interests AS `i` WHERE party = 'Lab' GROUP BY party
+
+SELECT party, COUNT(party) AS c, SUM(value) AS v FROM `mp`, `interests` WHERE `interests`.`member_id` = `mp`.`mys_id` GROUP BY party ORDER BY c DESC
