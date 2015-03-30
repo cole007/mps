@@ -4,24 +4,28 @@
 	$(window).on('load',function() {
 		// $('#search').after('<div class="results"></div>');
 		// alert('wibble');
-		$('#member').on('keyup',function() {
+		$('#member').on('keyup',function(e) {
 			var query = $(this).val();
 			if (query.length >= 3) {
-				$.ajax({
-				  url: "inc/member.php",
-				  type: "get", //send it through get method
-				  data:{member:query},
-				  success: function(response) {
-				    //Do Something
-				    // alert('yay!');
-				    $('.results').html(response);
-				  },
-				  error: function(xhr) {
-				    //Do Something to handle error
-				    // alert('boo!');
-				  }
-				});
-
+				console.log(e.keyCode);
+				if (e.keyCode == 40) {
+					$('.results').find('a').first().focus();
+				} else {
+					$.ajax({
+					  url: "inc/member.php",
+					  type: "get", //send it through get method
+					  data:{member:query},
+					  success: function(response) {
+					    //Do Something
+					    // alert('yay!');
+					    $('.results').html(response);
+					  },
+					  error: function(xhr) {
+					    //Do Something to handle error
+					    // alert('boo!');
+					  }
+					});
+				}
 			}			
 		});
 		$('.results').on('click','a',function(e) {
