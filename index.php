@@ -1,48 +1,43 @@
 <?php
 	include_once('inc/mysql.php');
-
-
+	include_once('inc/header.php');
+	// clean out content stuff here
+	if (isset($_GET['member'])) $member = $_GET['member'];
+	if (isset($_GET['mid'])) $mid = $_GET['mid'];
 	// include search for MP
 	// include search for party
 
-	$q = "SELECT party, COUNT(party) AS c, SUM(value) AS v FROM `mp`, `interests` WHERE `interests`.`member_id` = `mp`.`mys_id` GROUP BY party ORDER BY c DESC";
-	if ($result = $mysqli->query($q)) {
-		while($row = $result->fetch_array()) {
-			// print_r($row);
-			$rows[$row['party']]['c']['total'] = $row['c'];
-			$rows[$row['party']]['v']['total'] = $row['v'];
-			// $qD = "SELECT SUM(value) FROM mp AS m, interests AS `i` WHERE party = '".$row['party']."' GROUP BY party";
-			// if ($resultD = $mysqli->query($qD)) {
-			// 	echo $resultD->num_rows;
-			// 	while($rowD = $resultD->fetch_array()) {
-			// 		echo '<hr />';
-			// 		print_r($rowD);
-			// 	}
-			// }
+	?>
+	<style>
+	.chart {
+	  font-family: Arial, sans-serif;
+	  font-size: 10px;
+	}
+
+	.axis path, .axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.bar {
+	  fill: steelblue;
+	}
+	</style>
+	
+	<form method="GET" id="search">
+		<p>Please enter your MP or constituency</p>
+		<input id="member" name="member" type="text" <?php
+			if (isset($member)) echo ' value="'.$member.'"';
+		?>/>
+	</form>
+	<div class="results">
+	<?php
+		if (isset($mid)) {
+			include_once('inc/data.php');
+		} elseif (isset($member)) {
+			include_once('inc/member.php');							
 		}
-	}
-
-	for ($i = 2010; $i <= 2015; $i++) {
-		
-		$q = "SELECT party, COUNT(party) AS c, SUM(value) AS v FROM `mp`, `interests` WHERE `interests`.`member_id` = `mp`.`mys_id` AND `date` LIKE '" . $i . "-%' GROUP BY party ORDER BY c DESC";
-		if ($result = $mysqli->query($q)) {
-			while($row = $result->fetch_array()) {
-				// print_r($row);
-				$rows[$row['party']]['c'][$i] = $row['c'];
-				$rows[$row['party']]['v'][$i] = $row['v'];
-			}
-		}
-	}
-
-	foreach($rows AS $key => $value) {
-		$i = "INSERT INTO `parties` (`id`,`code`,`count`,`total`) VALUES ('','".$key."','".serialize($value['c'])."','".serialize($value['v'])."')";
-		// echo $i;
-		if ($result = $mysqli->query($i)) {
-			echo $import['file'] . " added\n";
-		} else {
-			echo $import['file'] . " not added\n";
-		}								
-	}
-
-
-	print_r($rows);
+	echo '</div>';	
+	
+	include_once('inc/footer.php');
