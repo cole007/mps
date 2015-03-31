@@ -1,0 +1,117 @@
+
+
+//    File: _assets/css/scss/style.scss
+//
+//    Use spaces not tabs
+// 
+//    # Selectors
+//
+//    One selector per line, One rule per line
+//    Don't use IDs as selectors
+//    Use hyphens to concatenate class names, eg body-container not bodyContainer or body_container
+//    Use BEM syntax:  
+//        Block 
+//        Block__element
+//        Block--modifier 
+//
+//    # Properties
+// 
+//    List related properties together
+//    If the value of the width or height is 0, do not specify units
+//    Avoid magic numbers, eg numbers used as  quick fixes on a one-off basis
+//    Close final property with a semi-colon
+//    Err towards shorthand where avaliable, eg border, background, etc
+//
+//    # SASS/SCSS
+//
+//    All Vendor Prefixes Use @mixins
+//    Maximum Nesting: Three Levels Deep
+//    Maximum Nesting: 50 Lines
+//
+//    Locally compile Expanded
+//    For Deployment compile Compressed
+//
+//    Be Generous With Comments
+//
+//    Variablize All Common Numbers, and Numbers with Meaning
+//    Variablize All Colors
+//
+//    Nest and Name Your Media Queries
+//
+//    Shame Last
+$ie: false;
+
+// using node-bourbon, see ./gulp/config.js
+@import "bourbon";
+
+// gulp generator scss
+@import 'gulp/sprites';
+@import 'gulp/svg-sprites';
+@import 'gulp/icon-font';
+
+// Libraries and dependencies
+@import 'libs/libs-reset';
+@import 'libs/libs-vars';
+@import 'libs/libs-functions';
+// help mixins
+@import 'libs/gridset';
+
+// tools
+@import 'tools/tools-grid';
+@import 'tools/tools-helpers';
+@import 'tools/tools-images';
+@import 'tools/tools-layout';
+@import 'tools/tools-type';
+
+// project specific mixins
+@import 'libs/libs-mixins';
+
+// external libraries go here
+// @import 'libs-gridset';
+@import 'libs/libs-utils';
+
+// comment out following for launch!
+@import 'views/views-beta';
+
+// very core level stuff
+// theme colours loop
+// wrappers, layout classes et al
+@import 'views/views-core';
+
+// totally mobile first
+// build the *things* here
+// atoms
+// tiny little things, and lists
+@import 'components/atoms/manifest';
+
+// molecules
+// media, quotes, pagination, smaller bits
+@import 'components/molecules/manifest';
+
+// organisms
+// big ole blocks, headers, footers, posts et al
+@import 'components/organisms/manifest';
+
+// grid
+@import 'components/grid/manifest';
+
+// master view / layout
+// place the *things* here 
+// nothing component based
+
+// 480 up, big mobiles
+@media screen and (min-width: $break-tiny * 1px) {
+    @import 'views/views-mobile';
+}
+// portrait ipad
+@media screen and (min-width: $break-small * 1px) {
+    @import 'views/views-tablet';
+}
+
+@media screen and (min-width: $break-large * 1px) {
+    @import 'views/views-desktop';
+}
+
+// more custom media queries... for massive screens, inbetween sizes, et al... 
+@import 'views/views-exceptions';
+

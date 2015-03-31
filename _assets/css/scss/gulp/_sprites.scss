@@ -1,0 +1,114 @@
+/*
+SCSS variables are information about icon's compiled state, stored under its original file name
+
+.icon-home {
+  width: $icon-home-width;
+}
+
+The large array-like variables contain all information about a single icon
+$icon-home: x y offset_x offset_y width height total_width total_height image_path;
+
+At the bottom of this section, we provide information about the spritesheet itself
+$spritesheet: width height image $spritesheet-sprites;
+*/
+$amazon-a-off-name: 'amazon-a-off';
+$amazon-a-off-x: 0px;
+$amazon-a-off-y: 65px;
+$amazon-a-off-offset-x: 0px;
+$amazon-a-off-offset-y: -65px;
+$amazon-a-off-width: 46px;
+$amazon-a-off-height: 38px;
+$amazon-a-off-total-width: 376px;
+$amazon-a-off-total-height: 130px;
+$amazon-a-off-image: '../images/sprite.png';
+$amazon-a-off: 0px 65px 0px -65px 46px 38px 376px 130px '../images/sprite.png' 'amazon-a-off';
+$amazon-a-name: 'amazon-a';
+$amazon-a-x: 46px;
+$amazon-a-y: 65px;
+$amazon-a-offset-x: -46px;
+$amazon-a-offset-y: -65px;
+$amazon-a-width: 46px;
+$amazon-a-height: 38px;
+$amazon-a-total-width: 376px;
+$amazon-a-total-height: 130px;
+$amazon-a-image: '../images/sprite.png';
+$amazon-a: 46px 65px -46px -65px 46px 38px 376px 130px '../images/sprite.png' 'amazon-a';
+$logo-e-name: 'logo-e';
+$logo-e-x: 0px;
+$logo-e-y: 103px;
+$logo-e-offset-x: 0px;
+$logo-e-offset-y: -103px;
+$logo-e-width: 25px;
+$logo-e-height: 27px;
+$logo-e-total-width: 376px;
+$logo-e-total-height: 130px;
+$logo-e-image: '../images/sprite.png';
+$logo-e: 0px 103px 0px -103px 25px 27px 376px 130px '../images/sprite.png' 'logo-e';
+$logo-name: 'logo';
+$logo-x: 0px;
+$logo-y: 0px;
+$logo-offset-x: 0px;
+$logo-offset-y: 0px;
+$logo-width: 376px;
+$logo-height: 65px;
+$logo-total-width: 376px;
+$logo-total-height: 130px;
+$logo-image: '../images/sprite.png';
+$logo: 0px 0px 0px 0px 376px 65px 376px 130px '../images/sprite.png' 'logo';
+$spritesheet-width: 376px;
+$spritesheet-height: 130px;
+$spritesheet-image: '../images/sprite.png';
+$spritesheet-sprites: $amazon-a-off $amazon-a $logo-e $logo;
+$spritesheet: 376px 130px '../images/sprite.png' $spritesheet-sprites;
+
+/*
+The provided mixins are intended to be used with the array-like variables
+
+.icon-home {
+  @include sprite-width($icon-home);
+}
+
+.icon-email {
+  @include sprite($icon-email);
+}
+*/
+@mixin sprite-width($sprite) {
+  width: nth($sprite, 5);
+}
+
+@mixin sprite-height($sprite) {
+  height: nth($sprite, 6);
+}
+
+@mixin sprite-position($sprite) {
+  $sprite-offset-x: nth($sprite, 3);
+  $sprite-offset-y: nth($sprite, 4);
+  background-position: $sprite-offset-x  $sprite-offset-y;
+}
+
+@mixin sprite-image($sprite) {
+  $sprite-image: nth($sprite, 9);
+  background-image: url(#{$sprite-image});
+}
+
+@mixin sprite($sprite) {
+  @include sprite-image($sprite);
+  @include sprite-position($sprite);
+  @include sprite-width($sprite);
+  @include sprite-height($sprite);
+}
+
+/*
+The `sprites` mixin generates identical output to the CSS template
+  but can be overridden inside of SCSS
+
+@include sprites($spritesheet-sprites);
+*/
+@mixin sprites($sprites) {
+  @each $sprite in $sprites {
+    $sprite-name: nth($sprite, 10);
+    .#{$sprite-name} {
+      @include sprite($sprite);
+    }
+  }
+}
