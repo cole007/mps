@@ -16,6 +16,9 @@
     	  color: #fff;
     	  border-radius: 2px;
     	}    	
+    	.label {
+    		font-size: 1.5em;
+    	}
     </style>
 </head>
 <body>

@@ -3,7 +3,7 @@
 	// clean me
 	if (!isset($member) && isset($_GET['member'])) $member = $_GET['member'];
 
-	$q = "SELECT * FROM `mp` WHERE `firstname` LIKE '%".$member."%' OR  `lastname` LIKE '%".$member."%' OR  `constituency` LIKE '%".$member."%'";
+	$q = "SELECT * FROM `mp` WHERE CONCAT(`firstname`, ' ', `lastname`) LIKE '%".$member."%' OR `constituency` LIKE '%".$member."%'";
 	if ($result = $mysqli->query($q)) {
 		if ($result->num_rows > 0) {					
 			echo '<table>';

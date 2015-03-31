@@ -63,10 +63,16 @@
 			// display date format
 	        var date_format = d3.time.format("%d %b");
 	        // var 
-	        var mean = d3.mean(data, function(d) {
+	        var meanVal = d3.mean(data, function(d) {
 				return d.value;
 			});
-			var median = d3.median(data, function(d) {
+			var medianVal = d3.median(data, function(d) {
+				return d.value;
+			});
+			var maxVal = d3.max(data, function(d) {
+				return d.value;
+			});
+			var sumVal = d3.sum(data, function(d) {
 				return d.value;
 			});
 
@@ -91,6 +97,8 @@
                 .attr("height", height);
 	                
 			vis.call(tip);
+			$('.schpeil').remove();
+			$('body').append('<div class="schpeil"></div>');
 
 	        // define the y scale  (vertical)
 	        var yScale = d3.scale.linear()
@@ -149,20 +157,22 @@
 	        // solution based on idea here: https://groups.google.com/forum/?fromgroups#!topic/d3-js/heOBPQF3sAY
 	        // first move the text left so no longer centered on the tick
 	        // then rotate up to get 45 degrees.
-	        vis.selectAll(".xaxis text")  // select all the text elements for the xaxis
-	          .attr("transform", function(d) {
-	             return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
-	         });
+	        // vis.selectAll(".xaxis text")  // select all the text elements for the xaxis
+	        //   .attr("transform", function(d) {
+	        //      // return "translate(" + this.getBBox().height*-2 + "," + this.getBBox().height + ")rotate(-45)";
+	        //  });
 	    
 	        // now add titles to the axes
 	        vis.append("text")
 	            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-	            .attr("transform", "translate("+ (padding/2) +","+(height/2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+	            .attr("transform", "translate(" + 5 + "," + (height/2) + ")")  // text is drawn off the screen top left, move down and out and rotate
+	            .attr('class','label')
 	            .text("£");
 
 	        vis.append("text")
 	            .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
 	            .attr("transform", "translate("+ (width/2) +","+(height-(padding/3))+")")  // centre below axis
+	            .attr('class','label')
 	            .text("Date");
  			
  			// do something with mouse hover
@@ -219,16 +229,19 @@
 			var myLine = vis.append("svg:line")
 	           .attr("class", 'd3-dp-line')
 	           .attr("x1", padding)
-	           .attr("y1", function(d) { return yScale(median); })
+	           .attr("y1", function(d) { return yScale(medianVal); })
 	           .attr("x2", width - padding + 6)
-	           .attr("y2", function(d) { return yScale(median); })
+	           .attr("y2", function(d) { return yScale(medianVal); })
 	           .style("stroke-dasharray", ("3, 3"))
 	           .style("stroke-opacity", 0.9)
 	           // .style("stroke", shadeColor(palette[party],-25));
 	           .style("stroke", shadeColor(palette[party],-12.5));
 	        // alert(shadeColor(palette[party],-25));
 			
-
+	        $('.schpeil').empty();
+	        $('.schpeil').append('<p>Highest: £' + d3.format(',')(maxVal) + '</p>');
+	        $('.schpeil').append('<p>Total: £' + d3.format(',')(sumVal) + '</p>');
+	        $('.schpeil').append('<p>Average: £' + d3.format(',')(medianVal) + '</p>');
         });
-
+		
 	</script>
