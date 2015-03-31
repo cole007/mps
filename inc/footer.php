@@ -7,7 +7,7 @@
 		$('#member').on('keyup',function(e) {
 			var query = $(this).val();
 			if (query.length >= 3) {
-				console.log(e.keyCode);
+				
 				if (e.keyCode == 40) {
 					$('.results').find('a').first().focus();
 				} else {
@@ -28,6 +28,20 @@
 				}
 			}			
 		});
+		
+		$('.results').on('keyup','a',function(e) {
+			// up
+			if(e.keyCode == 38) {
+				if ($(this).parents('tr').prev('tr').length == 0) {
+					$('#member').focus();
+				} else {
+					$(this).parents('tr').prev('tr').find('a').focus();
+				}
+			} else if(e.keyCode == 40) {
+				$(this).parents('tr').next('tr').find('a').focus();
+			} 
+		});
+
 		$('.results').on('click','a',function(e) {
 			e.preventDefault();
 			var qid = $(this).attr('data-mid');

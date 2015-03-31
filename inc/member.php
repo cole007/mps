@@ -21,7 +21,7 @@
 				// echo $url;
 				echo '<tr>';	
 				echo '<td><a href="' . $url . '" class="mp" data-mid="'.$mid.'">' . $name . '</a></td>';
-				echo '<td><a href="' . $url . '" class="mp" data-mid="'.$mid.'">' . $constituency . '</a></td>';
+				echo '<td>' . $constituency . '</td>';
 				echo '</tr>';					
 			}
 			echo '</table>';
