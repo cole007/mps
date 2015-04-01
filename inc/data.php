@@ -6,9 +6,10 @@
 		if ($result->num_rows > 0) {					
 			$row = $result->fetch_array();
 			echo '<h1>';
-			if (isset($row['title'])) echo $row['title'] . ' ';
-			if (isset($row['firstname'])) echo $row['firstname'] . ' ';
-			if (isset($row['lastname'])) echo $row['lastname'] . ' ';
+			if (isset($row['title'])) $name .= $row['title'] . ' ';
+			if (isset($row['firstname'])) $name .= $row['firstname'] . ' ';
+			if (isset($row['lastname'])) $name .= $row['lastname'] . ' ';
+			echo $name;
 			echo '</h1>';
 			echo '<h2>'.$row['constituency'].' (' . $row['party'] . ')</h2>';
 			$p = $row['party'];
@@ -28,6 +29,7 @@
 		<?php
 		
 		echo 'var avg = \'' . $mean . '\';';
+		echo 'var mp = \'' . $name . '\';';
 		echo 'var party = \'' . $p . '\';';
 		
 		?>
@@ -45,6 +47,9 @@
 			palette['Ind'] = '#999';
 			palette['Res'] = '#FF3300';
 			palette['UKIP'] = '#7E007A';		
+
+		// var mp = $('h1').text();
+		// alert(mp);
 
 		function shadeColor(color, percent) {  
 		    var num = parseInt(color.slice(1),16), amt = Math.round(2.55 * percent), R = (num >> 16) + amt, G = (num >> 8 & 0x00FF) + amt, B = (num & 0x0000FF) + amt;
@@ -89,16 +94,22 @@
 			  	return "<strong>&pound;" + d3.format(',')(d.value) + "</strong> " + monthNames[date.getMonth()] + ' ' + date.getFullYear();
 			  })
 
+
+			$('.schpeil').remove();
+			$('body').append('<div class="schpeil"></div>');
+			$('.results').append('<div class="chart"></div>');
+			$('.chart').append('<div class="tooltip"></div>');
+			$('.tooltip').hide();
+
 	        // create an svg container
-	        var vis = d3.select("body")
-	        	.attr('class', 'chart')
+	        var vis = d3.select(".chart")
+	        	// .attr('class', 'chart')
 	        	.append("svg:svg")
                 .attr("width", width)
                 .attr("height", height);
 	                
 			vis.call(tip);
-			$('.schpeil').remove();
-			$('body').append('<div class="schpeil"></div>');
+			
 
 	        // define the y scale  (vertical)
 	        var yScale = d3.scale.linear()
@@ -119,9 +130,9 @@
 			var minDate = getDate(data[0]),
                 maxDate = getDate(data[data.length-1]);
 
-            console.log(data[0]);
-            console.log(minDate);
-            console.log(new Date('2010-09'));
+            // console.log(data[0]);
+            // console.log(minDate);
+            // console.log(new Date('2010-09'));
 
             var xScale = d3.time.scale()
 	        	// .domain([minDate, maxDate]).range([padding + 20, width - padding]);
@@ -194,6 +205,16 @@
 		            .attr('y', function(d) { return height - padding;  })
 		            .attr('width', 12)
 		            .attr('title',function(d) { return d.date + ' (' + d.value + ')'; })
+		            .attr('data-date',function(d) { 
+		            	var date = new Date( d.date );
+		            	var monthNames = ["January", "February", "March", "April", "May", "June",
+		            	  "July", "August", "September", "October", "November", "December"
+		            	];		            	
+		            	return monthNames[date.getMonth()] + ' ' + date.getFullYear();
+		            })
+		            .attr('data-val',function(d) { 
+		            	return '£' + d3.format(',.2f')(d.value);
+		            })
 		            .attr('height',0)
 		            .style('fill',shadeColor(palette[party],25));
 		    
@@ -208,25 +229,73 @@
 		    	})
 		    .on('mouseout', function(p) {
 		    	var g = d3.select(this).style('fill',shadeColor(palette[party],25));
-		    }).on('mouseover', function(d) {
-	            tip.attr('class', 'd3-tip animate').show(d)
-	        })
-	        .on('mouseout', function(d) {
-	            tip.attr('class', 'd3-tip').show(d)
-	            tip.hide()
-            });
+		    });
 		    
-			var myLine = vis.append("svg:line")
+		    // var tipAvg = d3.tip()
+		    // 	.attr('class', 'd3-tip')
+		    // 	.html('overall average')
+		    // 	.attr('class', 'd3-tip')
+		    // 	// .offset([-10, 0])
+		    // 	.direction('e');
+			// vis.call(tipAvg);
+
+			
+			// avgF = avg.toFixed(2);
+			// avgF = d3.format(',')(avgF);
+			// console.log(avg);
+			// avg = parseInt(avg);
+			// var avgStr = avg.toFixed(2);
+			// console.log(avgStr);
+			// avgStr = d3.format(',.2f')(avg);
+			// console.log(avgStr);
+
+			vis.append("rect")
+	           .attr("class", 'd3-dp-line')
+	           .attr("x", padding)
+	           .attr("y", function(d) { return yScale(avg) - 5; })
+	           .attr("width", width - padding - padding + 6)
+	           .attr("height", 10)
+	           .attr('title', avg)
+	           .attr('data-val', '£' + d3.format(',.2f')(avg))
+	           .style("fill-opacity", '0');
+			   // .on('mouseover', tipAvg.show)
+			   // .on('mouseout', tipAvg.hide);
+			
+			vis.append("svg:line")
 	           .attr("class", 'd3-dp-line')
 	           .attr("x1", padding)
 	           .attr("y1", function(d) { return yScale(avg); })
 	           .attr("x2", width - padding + 6)
 	           .attr("y2", function(d) { return yScale(avg); })
-	           .style("stroke-dasharray", ("3, 3"))
+	           .attr('title', avg)
+	           .style("stroke-dasharray", ("3, 3"))	           
 	           .style("stroke-opacity", 0.9)
 	           .style("stroke", '#999');
 
-			var myLine = vis.append("svg:line")
+		    var tipMdn = d3.tip()
+		    	.attr('class', 'd3-tip')
+		    	.html(mp + ' average')
+		    	.attr('class', 'd3-tip')
+		    	// .offset([0, -100])
+		    	.direction('e');
+			// vis.call(tipMdn);
+
+			// medianVal = medianVal.toFixed(2);
+			// medianVal = d3.format(',')(medianVal);
+
+			vis.append("rect")
+	           .attr("class", 'd3-dp-line')
+	           .attr("x", padding)
+	           .attr("y", function(d) { return yScale(medianVal) - 5; })
+	           .attr("width", width - padding - padding + 6)
+	           .attr("height", 10)
+	           .attr('title', d3.format(',')(medianVal))
+	           .attr('data-val', '£' + d3.format(',.2f')(medianVal))
+				.style("fill-opacity", '0');
+			   // .on('mouseover', tipMdn.show)
+			   // .on('mouseout', tipMdn.hide);
+
+			vis.append("svg:line")
 	           .attr("class", 'd3-dp-line')
 	           .attr("x1", padding)
 	           .attr("y1", function(d) { return yScale(medianVal); })
@@ -236,8 +305,8 @@
 	           .style("stroke-opacity", 0.9)
 	           // .style("stroke", shadeColor(palette[party],-25));
 	           .style("stroke", shadeColor(palette[party],-12.5));
-	        // alert(shadeColor(palette[party],-25));
-			
+
+
 	        $('.schpeil').empty();
 	        $('.schpeil').append('<p>Highest: £' + d3.format(',')(maxVal) + '</p>');
 	        $('.schpeil').append('<p>Total: £' + d3.format(',')(sumVal) + '</p>');

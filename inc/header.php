@@ -16,8 +16,19 @@
     	  color: #fff;
     	  border-radius: 2px;
     	}    	
+    	.chart {
+    		position: relative;
+    	}
     	.label {
     		font-size: 1.5em;
+    	}
+    	.tooltip {
+    		padding: 10px;
+    		display: inline-block;
+    		background: red;
+    		position: absolute;
+    		top: 0;
+    		right: 0;
     	}
     </style>
 </head>

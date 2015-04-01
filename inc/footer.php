@@ -5,9 +5,9 @@
 		// $('#search').after('<div class="results"></div>');
 		// alert('wibble');
 		$('#member').on('keyup',function(e) {
+			// alert('wibble!');
 			var query = $(this).val();
 			if (query.length >= 3) {
-				
 				if (e.keyCode == 40) {
 					$('.results').find('a').first().focus();
 				} else {
@@ -61,8 +61,21 @@
 			    // alert('boo!');
 			  }
 			});
-			$('.results')
-		})
+			// $('.results')
+		});
+
+		// $('.chart').css('background','red');
+		$('.tooltip').hide();
+		var myVar;
+		$('body').on('mouseover','.bar, .d3-dp-line',function() {
+			var val = $(this).data('val');
+			var date = $(this).data('date');
+			$('.tooltip').text(val).show();
+			clearTimeout(myVar);
+		}).on('mouseout','.bar, .d3-dp-line',function() {
+			myVar = setTimeout(function(){ $('.tooltip').hide().text(''); }, 1000);
+			
+		});
 
 	});
 </script>

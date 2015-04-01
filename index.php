@@ -36,7 +36,7 @@
 		if (isset($mid)) {
 			include_once('inc/data.php');
 		} elseif (isset($member)) {
-			include_once('inc/member.php');							
+			include_once('inc/member.php');
 		}
 	echo '</div>';	
 	
