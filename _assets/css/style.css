@@ -953,6 +953,7 @@ body > svg {
   line-height: 2.44444;
   font-family: "GothamRounded-Medium", sans-serif;
   letter-spacing: -0.05em;
+  -webkit-transition: all .3s;
   transition: all .3s;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
@@ -1024,6 +1025,7 @@ fieldset {
   margin-bottom: 32px; }
 
 .form__input {
+  -webkit-transition: all 0.5s;
   transition: all 0.5s;
   font-size: 16px;
   font-size: 1rem;
@@ -1068,6 +1070,7 @@ fieldset {
 .form__toggle--radio + label:before {
   content: " ";
   border: 1px solid #d7dde1;
+  -webkit-transition: all .5s;
   transition: all .5s;
   border-radius: 100%;
   box-shadow: 0 0 0 9px #fff inset; }
@@ -1478,18 +1481,22 @@ a {
   padding-left: 8px; }
 
 .box-container {
+  display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-wrap: nowrap;
       -ms-flex-wrap: nowrap;
           flex-wrap: nowrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
   -webkit-justify-content: space-around;
       -ms-flex-pack: distribute;
           justify-content: space-around;
+  -webkit-box-align: stretch;
   -webkit-align-items: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;

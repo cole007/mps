@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="_assets/css/styles.css"/>
     <script type="text/javascript" src="_assets/js/libs/d3.js"></script>
     <script src="/_assets/js/libs/d3.tip.v0.6.3.min.js" charset="utf-8"></script>
+    <script src="//use.typekit.net/zeu7gks.js"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
     <style>
     	.d3-tip {
     	  line-height: 1;
@@ -25,10 +27,15 @@
     	.tooltip {
     		padding: 10px;
     		display: inline-block;
-    		background: red;
+    		background: rgba(0,0,0,0.75);
+    		color: white;
     		position: absolute;
     		top: 0;
-    		right: 0;
+    		/*right: 0;*/
+    		left: 0;
+    		margin-left: auto;
+    		margin-right: auto;
+    		font-size: 1.2em;
     	}
     </style>
 </head>

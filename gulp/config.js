@@ -40,9 +40,8 @@ var AUTOPREFIXER_BROWSERS = [
 module.exports = {
 
   browserSync: {
-        server: {
-            baseDir: "./"
-        }
+     notify: false,
+     proxy: 'mps.local/'
   },
 
   sass: {
@@ -76,7 +75,7 @@ module.exports = {
   },
 
   sprites: {
-    data: assets + 'images/sprites/*.png',
+    data: assets + 'images/png-sprites/*.png',
     imgName: 'sprite.png',
     cssName: '_sprites.scss',
     imgPath: '../images/sprite.png',
@@ -124,11 +123,11 @@ module.exports = {
     strategy: 'mobile',
   },
 
-  uncss: {
-    css: assets + 'css/style.css', 
-    html: root + '**/*.html',
-    dest: assets + 'css'
-  },
+  // uncss: {
+  //   css: assets + 'css/style.css', 
+  //   html: root + '**/*.html',
+  //   dest: assets + 'css'
+  // },
 
   cmq: {
     css: assets + 'css/style.css',
